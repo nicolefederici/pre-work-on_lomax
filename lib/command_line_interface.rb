@@ -37,6 +37,8 @@ class CommandLineInterface
   def run
     
     puts " Hey! You are at the Library of Congress' Alan Lomax Collection of Michigan Recordings! Here's a list of the Michigan cities from which Mr.Lomax collected recordings. Type the name of a city to view all the recordings he made there."
+    puts 
+    puts
     
     valid = nil
     while valid == nil
