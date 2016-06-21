@@ -3,32 +3,70 @@ require_relative "../lib/recording.rb"
 require 'nokogiri'
 
 
-class CommandLineInteface
+class CommandLineInterface
 
-def run
-  puts " Hey! You are at the Library of Congress' Digital Collections, specifically the Alan Lomax Collection of Michigan Recordings! Here is a list of the Michigan cities from which Mr.Lomax collected recordings of local musicians. Type the name of a city from the list to view all the recordings made in that city"
-#display list method here
-  city_answer = gets.chomp #it is a string
+  def display_places
+    places = Scraper.get_places
+    places.each do |place| 
+      puts place[:name]
+    end
+  end
 
-  #iterate over Scraper.get_places and find the name of the city they typed in
-  #then, get the url in that same hash, then using that url you will call Scraper.get_recordings
-  #dump that into a variable, which will be aan array, then I'll iterate over that array and spit the data from that back at the user.
-
-
-
-
-end
-
-
-
+  def display_recordings(url)
+    list_of_recordings = []
+    recordings = Scraper.get_recordings(url)
+    recordings.each do |recording|
+    puts recording.title recording.date recording.contributors
+    end
+  end
 
 
 
+  def user_validation
+    display_places
+    city_answer = gets.chomp #it is a string
+    places_array = Scraper.get_places 
+    choice = places_array.detect do |place|
+      place[:name] == city_answer
+    end
+    return choice
+  end
 
 
 
+  def run
+    
+    puts " Hey! You are at the Library of Congress' Alan Lomax Collection of Michigan Recordings! Here's a list of the Michigan cities from which Mr.Lomax collected recordings. Type the name of a city to view all the recordings he made there."
+    
+    valid = nil
+    while valid == nil
+      valid = user_validation
+      if valid != nil
+        display_recordings(valid[:url]
+      else 
+        puts "Alan Lomax didn't record anything in that city, at least not according to the Library of Congress' Collections. Choose a city from the list this time."
+      end
+    end
+
+        
+    next_meth
+
+  end
 
 
 
+  def next_meth 
+    
+    puts "Would you like to see the recorings from another city in Michigan?"
 
+    answer = gets.chomp
+
+    if answer == "yes" || answer == "Yes"
+      
+      run
+    
+    else
+      puts "Come back any time you'd like to check out this archive. See ya later!"
+    end
+  end
 end
