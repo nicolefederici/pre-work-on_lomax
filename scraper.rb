@@ -10,14 +10,16 @@ def self.get_places
   doc.css(".index li").each do |item|
     city_hash = {}
     city_hash[:name] = item.css("span.label").text
+    city_hash[:count] = item.css("span.count").text
     city_hash[:url] = "https:" + item.css("a")[0]["href"]
     places_array << city_hash
   end
+  places_array.delete_if { |hash| hash[:name] == "United States" || hash[:name] == "Michigan" || hash[:name] == "Illinois"}
   return places_array
 end
 
 def self.get_recordings(url)
-  doc = Nokogiri::HTML(open(url))
+  doc = Nokogiri::HTML(open(url + "&c=150&st=list"))
   recordings_array = []
   doc.css(".search-results.list-view li").each do |item|
     title = item.css("div.description h2 a")[0].text.strip
@@ -33,7 +35,7 @@ end
 
 
 
-end
+
 
 
 
