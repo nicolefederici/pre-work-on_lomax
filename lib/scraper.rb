@@ -14,7 +14,7 @@ class Scraper
       city_hash[:url] = "https:" + item.css("a")[0]["href"]
       places_array << city_hash
     end
-    places_array.delete_if { |hash| hash[:name] == "United States" || hash[:name] == "Michigan" || hash[:name] == "Illinois"}
+    places_array.delete_if { |hash| hash[:name] == "United States" || hash[:name] == "Michigan" || hash[:name] == "Illinois" || hash[:name] == "Chicago" || hash[:name] == "Wisconsin"}
     return places_array
   end
 
@@ -22,11 +22,10 @@ class Scraper
     doc = Nokogiri::HTML(open(url + "&c=150&st=list"))
     recordings_array = []
     doc.css(".search-results.list-view li").each do |item|
-      title = item.css("div.description h2 a")[0].text.strip
-      contributors = item.css("ul li.contributors span")[0].text.strip
-      date = item.css("ul li.date span")[0].text.strip
-      recording_url = item.css("div.description h2 a")[0]["href"]
-      recordings_array << Recording.new(title,contributors,date,recording_url)
+      title = item.css("div.description h2 a").text.strip
+      contributors = item.css("ul li.contributor span").text.strip
+      date = item.css("ul li.date span").text.strip
+      recordings_array << Recording.new(title,contributors,date)
     end
     return recordings_array
   end

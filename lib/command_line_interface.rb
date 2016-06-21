@@ -16,7 +16,7 @@ class CommandLineInterface
     list_of_recordings = []
     recordings = Scraper.get_recordings(url)
     recordings.each do |recording|
-    puts recording.title recording.date recording.contributors
+    puts recording.title, recording.date, recording.contributors
     end
   end
 
@@ -42,7 +42,7 @@ class CommandLineInterface
     while valid == nil
       valid = user_validation
       if valid != nil
-        display_recordings(valid[:url]
+        display_recordings(valid[:url])
       else 
         puts "Alan Lomax didn't record anything in that city, at least not according to the Library of Congress' Collections. Choose a city from the list this time."
       end
